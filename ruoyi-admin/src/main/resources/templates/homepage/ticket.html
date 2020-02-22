@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <title> 购票</title>
+</head>
+<body>
+车票信息:</br>
+
+车次 : <span th:text="${ticketInfo.trains}"></span></br>
+发站 : <span th:text="${ticketInfo.hairstanding}"></span></br>
+到站 : <span th:text="${ticketInfo.theterminal}"></span></br>
+发车时间 :<span th:text="${#dates.format(ticketInfo.drivingtime,'yyyy-MM-dd HH:mm:ss')}"></span></br>
+到站时间 :<span th:text="${#dates.format(ticketInfo.timeofarrival,'yyyy-MM-dd HH:mm:ss')}"></span></br>
+
+</br>
+</br>
+</br>
+
+乘客信息:</br>
+用户名 : <span th:text="${user.userName}"></span></br>
+手机号码 : <span th:text="${user.phonenumber}"></span></br>
+
+
+</body>
+
+</html>

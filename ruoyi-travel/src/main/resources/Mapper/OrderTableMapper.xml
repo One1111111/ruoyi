@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.travel.mapper.OrderTableMapper">
+    
+    <resultMap type="OrderTable" id="OrderTableResult">
+        <result property="id"    column="id"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="userName"    column="user_name"    />
+        <result property="userPhoneNumber"    column="user_phone_number"    />
+        <result property="train"    column="train"    />
+        <result property="departureStation"    column="departure_station"    />
+        <result property="destinationStation"    column="destination_station"    />
+        <result property="departureDate"    column="departure_date"    />
+        <result property="destinationDate"    column="destination_date"    />
+        <result property="trainPrice"    column="train_price"    />
+    </resultMap>
+
+    <sql id="selectOrderTableVo">
+        select id, order_number, order_status, order_date, user_name, user_phone_number, train, departure_station, destination_station, departure_date, destination_date, train_price from order_table
+    </sql>
+
+    <select id="selectOrderTableList" parameterType="OrderTable" resultMap="OrderTableResult">
+        <include refid="selectOrderTableVo"/>
+        <where>  
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number = #{orderNumber}</if>
+            <if test="orderStatus != null "> and order_status = #{orderStatus}</if>
+            <if test="orderDate != null "> and order_date = #{orderDate}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="userPhoneNumber != null  and userPhoneNumber != ''"> and user_phone_number = #{userPhoneNumber}</if>
+            <if test="train != null  and train != ''"> and train = #{train}</if>
+            <if test="departureStation != null  and departureStation != ''"> and departure_station like concat('%', #{departureStation}, '%')</if>
+            <if test="destinationStation != null  and destinationStation != ''"> and destination_station like concat('%', #{destinationStation}, '%')</if>
+            <if test="departureDate != null "> and departure_date = #{departureDate}</if>
+            <if test="destinationDate != null "> and destination_date = #{destinationDate}</if>
+            <if test="trainPrice != null "> and train_price = #{trainPrice}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderTableById" parameterType="Long" resultMap="OrderTableResult">
+        <include refid="selectOrderTableVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrderTable" parameterType="OrderTable" useGeneratedKeys="true" keyProperty="id">
+        insert into order_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null  and orderNumber != ''">order_number,</if>
+            <if test="orderStatus != null ">order_status,</if>
+            <if test="orderDate != null ">order_date,</if>
+            <if test="userName != null  and userName != ''">user_name,</if>
+            <if test="userPhoneNumber != null  and userPhoneNumber != ''">user_phone_number,</if>
+            <if test="train != null  and train != ''">train,</if>
+            <if test="departureStation != null  and departureStation != ''">departure_station,</if>
+            <if test="destinationStation != null  and destinationStation != ''">destination_station,</if>
+            <if test="departureDate != null ">departure_date,</if>
+            <if test="destinationDate != null ">destination_date,</if>
+            <if test="trainPrice != null ">train_price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null  and orderNumber != ''">#{orderNumber},</if>
+            <if test="orderStatus != null ">#{orderStatus},</if>
+            <if test="orderDate != null ">#{orderDate},</if>
+            <if test="userName != null  and userName != ''">#{userName},</if>
+            <if test="userPhoneNumber != null  and userPhoneNumber != ''">#{userPhoneNumber},</if>
+            <if test="train != null  and train != ''">#{train},</if>
+            <if test="departureStation != null  and departureStation != ''">#{departureStation},</if>
+            <if test="destinationStation != null  and destinationStation != ''">#{destinationStation},</if>
+            <if test="departureDate != null ">#{departureDate},</if>
+            <if test="destinationDate != null ">#{destinationDate},</if>
+            <if test="trainPrice != null ">#{trainPrice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderTable" parameterType="OrderTable">
+        update order_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNumber != null  and orderNumber != ''">order_number = #{orderNumber},</if>
+            <if test="orderStatus != null ">order_status = #{orderStatus},</if>
+            <if test="orderDate != null ">order_date = #{orderDate},</if>
+            <if test="userName != null  and userName != ''">user_name = #{userName},</if>
+            <if test="userPhoneNumber != null  and userPhoneNumber != ''">user_phone_number = #{userPhoneNumber},</if>
+            <if test="train != null  and train != ''">train = #{train},</if>
+            <if test="departureStation != null  and departureStation != ''">departure_station = #{departureStation},</if>
+            <if test="destinationStation != null  and destinationStation != ''">destination_station = #{destinationStation},</if>
+            <if test="departureDate != null ">departure_date = #{departureDate},</if>
+            <if test="destinationDate != null ">destination_date = #{destinationDate},</if>
+            <if test="trainPrice != null ">train_price = #{trainPrice},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderTableById" parameterType="Long">
+        delete from order_table where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderTableByIds" parameterType="String">
+        delete from order_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

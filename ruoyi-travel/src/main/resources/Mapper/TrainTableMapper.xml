@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.travel.mapper.TrainTableMapper">
+    
+    <resultMap type="TrainTable" id="TrainTableResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="hairstanding"    column="HairStanding"    />
+        <result property="theterminal"    column="TheTerminal"    />
+        <result property="transferstation"    column="TransferStation"    />
+        <result property="drivingtime"    column="DrivingTime"    />
+        <result property="timeofarrival"    column="TimeOfArrival"    />
+        <result property="trains"    column="trains"    />
+        <result property="standNumber"    column="Stand_number"    />
+        <result property="price"    column="price"    />
+    </resultMap>
+
+    <sql id="selectTrainTableVo">
+        select id, type, HairStanding, TheTerminal, TransferStation, DrivingTime, TimeOfArrival, trains, Stand_number, price from train_table
+    </sql>
+
+    <select id="selectTrainTableList" parameterType="TrainTable" resultMap="TrainTableResult">
+        <include refid="selectTrainTableVo"/>
+        <where>  
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="hairstanding != null  and hairstanding != ''"> and HairStanding = #{hairstanding}</if>
+            <if test="theterminal != null  and theterminal != ''"> and TheTerminal = #{theterminal}</if>
+            <if test="drivingtime != null "> and DrivingTime &lt;= #{drivingtime}</if>
+            <if test="price != null "> and price &gt;= #{price}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrainTableById" parameterType="Long" resultMap="TrainTableResult">
+        <include refid="selectTrainTableVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTrainTable" parameterType="TrainTable" useGeneratedKeys="true" keyProperty="id">
+        insert into train_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null  and type != ''">type,</if>
+            <if test="hairstanding != null  and hairstanding != ''">HairStanding,</if>
+            <if test="theterminal != null  and theterminal != ''">TheTerminal,</if>
+            <if test="transferstation != null  and transferstation != ''">TransferStation,</if>
+            <if test="drivingtime != null ">DrivingTime,</if>
+            <if test="timeofarrival != null ">TimeOfArrival,</if>
+            <if test="trains != null  and trains != ''">trains,</if>
+            <if test="standNumber != null ">Stand_number,</if>
+            <if test="price != null ">price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="hairstanding != null  and hairstanding != ''">#{hairstanding},</if>
+            <if test="theterminal != null  and theterminal != ''">#{theterminal},</if>
+            <if test="transferstation != null  and transferstation != ''">#{transferstation},</if>
+            <if test="drivingtime != null ">#{drivingtime},</if>
+            <if test="timeofarrival != null ">#{timeofarrival},</if>
+            <if test="trains != null  and trains != ''">#{trains},</if>
+            <if test="standNumber != null ">#{standNumber},</if>
+            <if test="price != null ">#{price},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrainTable" parameterType="TrainTable">
+        update train_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null  and type != ''">type = #{type},</if>
+            <if test="hairstanding != null  and hairstanding != ''">HairStanding = #{hairstanding},</if>
+            <if test="theterminal != null  and theterminal != ''">TheTerminal = #{theterminal},</if>
+            <if test="transferstation != null  and transferstation != ''">TransferStation = #{transferstation},</if>
+            <if test="drivingtime != null ">DrivingTime = #{drivingtime},</if>
+            <if test="timeofarrival != null ">TimeOfArrival = #{timeofarrival},</if>
+            <if test="trains != null  and trains != ''">trains = #{trains},</if>
+            <if test="standNumber != null ">Stand_number = #{standNumber},</if>
+            <if test="price != null ">price = #{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTrainTableById" parameterType="Long">
+        delete from train_table where id = #{id}
+    </delete>
+
+    <delete id="deleteTrainTableByIds" parameterType="String">
+        delete from train_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

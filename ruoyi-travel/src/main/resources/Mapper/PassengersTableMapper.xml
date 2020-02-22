@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.travel.mapper.PassengersTableMapper">
+    
+    <resultMap type="PassengersTable" id="PassengersTableResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="age"    column="age"    />
+        <result property="place"    column="place"    />
+        <result property="search"    column="search"    />
+        <result property="tripMode"    column="trip_mode"    />
+        <result property="travelCost"    column="travel_cost"    />
+    </resultMap>
+
+    <sql id="selectPassengersTableVo">
+        select id, name, sex, age, place, search, trip_mode, travel_cost from passengers_table
+    </sql>
+
+    <select id="selectPassengersTableList" parameterType="PassengersTable" resultMap="PassengersTableResult">
+        <include refid="selectPassengersTableVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sex != null "> and sex = #{sex}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="place != null  and place != ''"> and place = #{place}</if>
+            <if test="search != null  and search != ''"> and search = #{search}</if>
+            <if test="tripMode != null  and tripMode != ''"> and trip_mode = #{tripMode}</if>
+            <if test="travelCost != null "> and travel_cost = #{travelCost}</if>
+        </where>
+
+    </select>
+    
+    <select id="selectPassengersTableById" parameterType="Long" resultMap="PassengersTableResult">
+        <include refid="selectPassengersTableVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPassengersTable" parameterType="PassengersTable">
+        insert into passengers_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="sex != null ">sex,</if>
+            <if test="age != null ">age,</if>
+            <if test="place != null  and place != ''">place,</if>
+            <if test="search != null  and search != ''">search,</if>
+            <if test="tripMode != null  and tripMode != ''">trip_mode,</if>
+            <if test="travelCost != null ">travel_cost,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="sex != null ">#{sex},</if>
+            <if test="age != null ">#{age},</if>
+            <if test="place != null  and place != ''">#{place},</if>
+            <if test="search != null  and search != ''">#{search},</if>
+            <if test="tripMode != null  and tripMode != ''">#{tripMode},</if>
+            <if test="travelCost != null ">#{travelCost},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePassengersTable" parameterType="PassengersTable">
+        update passengers_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="sex != null ">sex = #{sex},</if>
+            <if test="age != null ">age = #{age},</if>
+            <if test="place != null  and place != ''">place = #{place},</if>
+            <if test="search != null  and search != ''">search = #{search},</if>
+            <if test="tripMode != null  and tripMode != ''">trip_mode = #{tripMode},</if>
+            <if test="travelCost != null ">travel_cost = #{travelCost},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePassengersTableById" parameterType="Long">
+        delete from passengers_table where id = #{id}
+    </delete>
+
+    <delete id="deletePassengersTableByIds" parameterType="String">
+        delete from passengers_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

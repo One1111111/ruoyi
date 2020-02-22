@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/jquery.min.js}"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<script type="text/javascript">
+    function getTime() {
+        var date = new Date();
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        var h = date.getHours();
+        var i = date.getMinutes();
+        var s = date.getSeconds();
+        var time = y + "年" + m + "月" + d + "日" + h + "时" + i + "分" + s + "秒";
+        document.getElementById('mytime').innerHTML = time;
+    }
+
+    setInterval(getTime, 1000);
+
+</script>
+<script th:inline="none">
+
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , height: 390
+            , width: 500
+            , url: '/homepage/rankingList' //数据接口
+            , cols: [[ //表头
+                {field: 'dest', title: '景点名', width: 160, sort: true, fixed: 'left'}
+                , {field: 'province', title: '省份', width: 80}
+                , {field: 'humanTraffic', title: '游客', width: 80, sort: true}
+            ]]
+        });
+
+    });
+
+    layui.use('carousel', function () {
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#lubotu'
+            , height: 366
+            , width: '100%' //设置容器宽度
+            , arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+    });
+
+
+</script>
+<body>
+<div class="container-fluid" style="background-color: #d2d2d2">
+    <div class="row" id="titleO">
+        <div class="col-sm">
+            欢迎 : <span th:text="${username}"></span>
+        </div>
+        <div class="col-sm">
+            <div class="row">
+                <div class="col-sm">
+                    <span id="mytime"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+
+        </div>
+    </div>
+</div>
+
+
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md9">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">我的旅游</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/homepage/travel}">我的行程</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">我的酒店</a>
+                </li>
+            </ul>
+            <div class="layui-carousel" id="lubotu">
+                <div carousel-item>
+                    <div><a href="#"><img src="../img/630.jfif"></a></div>
+                    <div><a href="" th:href="@{/route}"><img src="../img/l_457743203.png"></a></div>
+                    <div><img src="../img/20200208004909_458433937.png"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            <table id="demo" lay-filter="test" lay-size="sm"></table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    layui.use('jquery', function () {
+
+        var $ = layui.$;
+
+        $(function($) {
+            // 你可以在这里继续使用$作为别名...
+            $(".buy").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "/t/getPhbList",
+                    data: "phoneId="+$(this).attr('value'),
+                    success: function (data) {
+
+                        $("#ph").empty();
+
+                        var html = "";
+
+                        for(var i = 0; i < data.length; i++) {
+                            html +="<li class=\"list-group-item\">"+"<span>"+data[i].name+"</span>"+"<span style=\"float: right;\">已售："+data[i].sales+" 台</span>"+"</li>";
+                        };
+
+
+                        $("#ph").html(html);
+                    }
+                });
+            });
+        });
+
+    });
+
+
+
+</script>
+<!--排行榜-->
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-md4">
+        <ul class="list-group">
+            <ul  id="ph">
+            </ul>
+        </ul>
+    </div>
+    <div class="layui-col-md4">
+        <ul class="list-group">
+            <li th:each="phone : ${phones}" class="list-group-item">
+                <span th:text="${phone.name}">手机名</span>&nbsp;&nbsp;&nbsp;&nbsp;<span
+                    th:text="${phone.ranking}">手机销量排名</span>
+                <input type="hidden" th:value="${phone.id}"/>
+                <a class="btn btn-primary btn-sm buy" style="float: right;" th:value="${phone.id}">购买66</a>
+            </li>
+        </ul>
+    </div>
+    <div class="layui-col-md4">
+        <a class="btn btn-primary" href="/homepage/clear">清空redis缓存</a>
+    </div>
+</div>
+
+</body>
+</html>

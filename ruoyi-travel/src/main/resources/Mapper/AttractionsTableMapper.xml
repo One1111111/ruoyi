@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.travel.mapper.AttractionsTableMapper">
+    
+    <resultMap type="AttractionsTable" id="AttractionsTableResult">
+        <result property="id"    column="id"    />
+        <result property="address"    column="address"    />
+        <result property="lat"    column="lat"    />
+        <result property="lng"    column="lng"    />
+        <result property="dest"    column="dest"    />
+        <result property="city"    column="city"    />
+        <result property="province"    column="province"    />
+        <result property="humanTraffic"    column="human_traffic"    />
+    </resultMap>
+
+    <sql id="selectAttractionsTableVo">
+        select id, address, lat, lng, dest, city, province, human_traffic from attractions_table
+    </sql>
+
+    <select id="selectAttractionsTableList" parameterType="AttractionsTable" resultMap="AttractionsTableResult">
+        <include refid="selectAttractionsTableVo"/>
+        <where>  
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="lat != null  and lat != ''"> and lat = #{lat}</if>
+            <if test="lng != null  and lng != ''"> and lng = #{lng}</if>
+            <if test="dest != null  and dest != ''"> and dest = #{dest}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="humanTraffic != null "> and human_traffic &gt;= #{humanTraffic}</if>
+        </where>
+    </select>
+    
+    <select id="selectAttractionsTableById" parameterType="Long" resultMap="AttractionsTableResult">
+        <include refid="selectAttractionsTableVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAttractionsTable" parameterType="AttractionsTable" useGeneratedKeys="true" keyProperty="id">
+        insert into attractions_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="address != null  and address != ''">address,</if>
+            <if test="lat != null  and lat != ''">lat,</if>
+            <if test="lng != null  and lng != ''">lng,</if>
+            <if test="dest != null  and dest != ''">dest,</if>
+            <if test="city != null  and city != ''">city,</if>
+            <if test="province != null  and province != ''">province,</if>
+            <if test="humanTraffic != null ">human_traffic,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="lat != null  and lat != ''">#{lat},</if>
+            <if test="lng != null  and lng != ''">#{lng},</if>
+            <if test="dest != null  and dest != ''">#{dest},</if>
+            <if test="city != null  and city != ''">#{city},</if>
+            <if test="province != null  and province != ''">#{province},</if>
+            <if test="humanTraffic != null ">#{humanTraffic},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAttractionsTable" parameterType="AttractionsTable">
+        update attractions_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="lat != null  and lat != ''">lat = #{lat},</if>
+            <if test="lng != null  and lng != ''">lng = #{lng},</if>
+            <if test="dest != null  and dest != ''">dest = #{dest},</if>
+            <if test="city != null  and city != ''">city = #{city},</if>
+            <if test="province != null  and province != ''">province = #{province},</if>
+            <if test="humanTraffic != null ">human_traffic = #{humanTraffic},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAttractionsTableById" parameterType="Long">
+        delete from attractions_table where id = #{id}
+    </delete>
+
+    <delete id="deleteAttractionsTableByIds" parameterType="String">
+        delete from attractions_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectRankingList"   resultMap="AttractionsTableResult">
+        select dest,province,human_traffic from attractions_table GROUP BY province ORDER BY human_traffic DESC limit 10
+    </select>
+
+</mapper>
