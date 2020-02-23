@@ -36,11 +36,11 @@ public class TrainTable extends BaseEntity
     private String transferstation;
 
     /** 开车时间 */
-    @Excel(name = "开车时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "开车时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date drivingtime;
 
     /** 到达时间 */
-    @Excel(name = "到达时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "到达时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date timeofarrival;
 
     /** 车次 */

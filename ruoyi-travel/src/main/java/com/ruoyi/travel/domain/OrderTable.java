@@ -52,11 +52,11 @@ public class OrderTable extends BaseEntity
     private String destinationStation;
 
     /** 出发时间 */
-    @Excel(name = "出发时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "出发时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date departureDate;
 
     /** 到达时间 */
-    @Excel(name = "到达时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "到达时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date destinationDate;
 
     /** 车票价格 */

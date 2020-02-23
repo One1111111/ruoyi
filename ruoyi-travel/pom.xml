@@ -11,6 +11,10 @@
 
     <artifactId>ruoyi-travel</artifactId>
 
+    <description>
+        travel系统模块
+    </description>
+
     <dependencies>
 
         <!-- 通用工具-->
@@ -18,8 +22,6 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common</artifactId>
         </dependency>
-
-
 
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <dependency>
