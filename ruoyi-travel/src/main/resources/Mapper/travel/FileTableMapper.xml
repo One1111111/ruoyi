@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.travel.mapper.FileTableMapper">
+    
+    <resultMap type="FileTable" id="FileTableResult">
+        <result property="id"    column="id"    />
+        <result property="promulgator"    column="promulgator"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileStatus"    column="file_status"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileDescriptor"    column="file_descriptor"    />
+        <result property="releaseTime"    column="release_time"    />
+    </resultMap>
+
+    <sql id="selectFileTableVo">
+        select id, promulgator, file_name, file_status, file_path, file_descriptor, release_time from file_table
+    </sql>
+
+    <select id="selectFileTableList" parameterType="FileTable" resultMap="FileTableResult">
+        <include refid="selectFileTableVo"/>
+        <where>  
+            <if test="promulgator != null  and promulgator != ''"> and promulgator = #{promulgator}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="fileStatus != null "> and file_status = #{fileStatus}</if>
+            <if test="filePath != null  and filePath != ''"> and file_path like concat('%', #{filePath}, '%')</if>
+            <if test="fileDescriptor != null  and fileDescriptor != ''"> and file_descriptor like concat('%', #{fileDescriptor}, '%')</if>
+            <if test="releaseTime != null "> and release_time = #{releaseTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectFileTableById" parameterType="Long" resultMap="FileTableResult">
+        <include refid="selectFileTableVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFileTable" parameterType="FileTable" useGeneratedKeys="true" keyProperty="id">
+        insert into file_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="promulgator != null  and promulgator != ''">promulgator,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="fileStatus != null ">file_status,</if>
+            <if test="filePath != null  and filePath != ''">file_path,</if>
+            <if test="fileDescriptor != null  and fileDescriptor != ''">file_descriptor,</if>
+            <if test="releaseTime != null ">release_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="promulgator != null  and promulgator != ''">#{promulgator},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="fileStatus != null ">#{fileStatus},</if>
+            <if test="filePath != null  and filePath != ''">#{filePath},</if>
+            <if test="fileDescriptor != null  and fileDescriptor != ''">#{fileDescriptor},</if>
+            <if test="releaseTime != null ">#{releaseTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFileTable" parameterType="FileTable">
+        update file_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="promulgator != null  and promulgator != ''">promulgator = #{promulgator},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="fileStatus != null ">file_status = #{fileStatus},</if>
+            <if test="filePath != null  and filePath != ''">file_path = #{filePath},</if>
+            <if test="fileDescriptor != null  and fileDescriptor != ''">file_descriptor = #{fileDescriptor},</if>
+            <if test="releaseTime != null ">release_time = #{releaseTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFileTableById" parameterType="Long">
+        delete from file_table where id = #{id}
+    </delete>
+
+    <delete id="deleteFileTableByIds" parameterType="String">
+        delete from file_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

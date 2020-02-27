@@ -68,6 +68,9 @@ public class Absfnlskf {
     }
 
 
+    /**
+     * 列车数据添加
+     */
     @Test
     public void a() {
         Calendar rightNow = Calendar.getInstance();
@@ -158,4 +161,20 @@ public class Absfnlskf {
             tableService.insertTrainTable(trainTable);
         }
     }
+
+//    /**
+//     * 文件上传测试
+//     */
+//    @PostMapping("/add")
+//    @ResponseBody
+//    public AjaxResult addSave(@RequestParam("file") MultipartFile file, FileInfo fileInfo) throws IOException
+//    {
+//        // 上传文件路径
+//        String filePath = RuoYiConfig.getUploadPath();
+//        // 上传并返回新文件名称
+//        String fileName = FileUploadUtils.upload(filePath, file);
+//        fileInfo.setFilePath(fileName);
+//        return toAjax(fileInfoService.insertFileInfo(fileInfo));
+//    }
+
 }
