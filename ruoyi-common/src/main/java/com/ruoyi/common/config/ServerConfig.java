@@ -1,8 +1,9 @@
 package com.ruoyi.common.config;
 
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
 import com.ruoyi.common.utils.ServletUtils;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 服务相关配置
@@ -30,4 +31,5 @@ public class ServerConfig
         String contextPath = request.getServletContext().getContextPath();
         return url.delete(url.length() - request.getRequestURI().length(), url.length()).append(contextPath).toString();
     }
+
 }

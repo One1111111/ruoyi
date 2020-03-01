@@ -82,7 +82,11 @@ public class CommonController
             String url = serverConfig.getUrl() + fileName;
             AjaxResult ajax = AjaxResult.success();
             ajax.put("fileName", fileName);
+            if(url != null && url.contains("ruoyi")){
+                url = url.replace("ruoyi", "goodo.tk");
+            }
             ajax.put("url", url);
+            log.info("log:"+url);
             return ajax;
         }
         catch (Exception e)

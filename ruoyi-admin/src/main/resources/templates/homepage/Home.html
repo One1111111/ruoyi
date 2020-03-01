@@ -6,6 +6,7 @@
 <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
 <script th:src="@{/layui/layui.js}"></script>
 <script th:src="@{/js/jquery.min.js}"></script>
+<th:block th:include="include :: header('选项卡 & 面板')"/>
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
@@ -22,15 +23,12 @@
         var time = y + "年" + m + "月" + d + "日" + h + "时" + i + "分" + s + "秒";
         document.getElementById('mytime').innerHTML = time;
     }
-
     setInterval(getTime, 1000);
-
 </script>
 <script th:inline="none">
 
     layui.use('table', function () {
         var table = layui.table;
-
         //第一个实例
         table.render({
             elem: '#demo'
@@ -43,7 +41,6 @@
                 , {field: 'humanTraffic', title: '游客', width: 80, sort: true}
             ]]
         });
-
     });
 
     layui.use('carousel', function () {
@@ -57,8 +54,6 @@
             //,anim: 'updown' //切换动画方式
         });
     });
-
-
 </script>
 <body>
 <div class="container-fluid" style="background-color: #d2d2d2">
@@ -75,6 +70,44 @@
         </div>
         <div class="col-sm">
 
+        </div>
+    </div>
+</div>
+
+<!-- 选项卡 -->
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">我的旅游</a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">我的行程</a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">我的酒店</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="panel-body">
+                            <strong>HTML5 文档类型</strong>
+                            <p>Bootstrap 使用到的某些 HTML 元素和 CSS 属性需要将页面设置为 HTML5 文档类型。在你项目中的每个页面都要参照下面的格式进行设置。</p>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+                            <img src="../img/20200208004909_458433937.png">
+                        </div>
+                    </div>
+                    <div id="tab-3" class="tab-pane">
+                        <div class="panel-body">
+                            <img src="../img/20200208004909_458433937.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -112,23 +145,23 @@
 
         var $ = layui.$;
 
-        $(function($) {
+        $(function ($) {
             // 你可以在这里继续使用$作为别名...
-            $(".buy").click(function(){
+            $(".buy").click(function () {
                 $.ajax({
                     type: "POST",
                     url: "/t/getPhbList",
-                    data: "phoneId="+$(this).attr('value'),
+                    data: "phoneId=" + $(this).attr('value'),
                     success: function (data) {
 
                         $("#ph").empty();
 
                         var html = "";
 
-                        for(var i = 0; i < data.length; i++) {
-                            html +="<li class=\"list-group-item\">"+"<span>"+data[i].name+"</span>"+"<span style=\"float: right;\">已售："+data[i].sales+" 台</span>"+"</li>";
-                        };
-
+                        for (var i = 0; i < data.length; i++) {
+                            html += "<li class=\"list-group-item\">" + "<span>" + data[i].name + "</span>" + "<span style=\"float: right;\">已售：" + data[i].sales + " 台</span>" + "</li>";
+                        }
+                        ;
 
                         $("#ph").html(html);
                     }
@@ -137,15 +170,12 @@
         });
 
     });
-
-
-
 </script>
 <!--排行榜-->
 <div class="layui-row layui-col-space10">
     <div class="layui-col-md4">
         <ul class="list-group">
-            <ul  id="ph">
+            <ul id="ph">
             </ul>
         </ul>
     </div>
@@ -163,6 +193,6 @@
         <a class="btn btn-primary" href="/homepage/clear">清空redis缓存</a>
     </div>
 </div>
-
+<th:block th:include="include :: footer" />
 </body>
 </html>
