@@ -46,7 +46,8 @@ public class FileTableController extends BaseController {
 
     @RequiresPermissions("file:table:view")
     @GetMapping()
-    public String table() {
+    public String table(ModelMap mmap) {
+        mmap.put("users", iSysUserService.selectUserList(new SysUser()));
         return prefix + "/table";
     }
 
@@ -56,9 +57,13 @@ public class FileTableController extends BaseController {
     @RequiresPermissions("file:table:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(FileTable fileTable) {
+    public TableDataInfo list(@RequestParam("startTime") String s,@RequestParam("endTime") String e,FileTable fileTable, ModelMap mmap) {
+
         startPage();
         List<FileTable> list = fileTableService.selectFileTableList(fileTable);
+        if(!StringUtils.isEmpty(s) && !StringUtils.isEmpty(e)){
+            return getDataTable( fileTableService.selectFileTableListWithDate(fileTable,s,e));
+        }
         return getDataTable(list);
     }
 

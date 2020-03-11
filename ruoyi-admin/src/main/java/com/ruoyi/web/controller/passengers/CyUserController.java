@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.travel.domain.CyUser;
 import com.ruoyi.travel.service.ICyUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,7 +96,12 @@ public class CyUserController extends BaseController
     public String edit(@PathVariable("id") Long id, ModelMap mmap)
     {
         CyUser cyUser = cyUserService.selectCyUserById(id);
+        List<String> interest = new ArrayList<>();
+        interest.add("唱歌");
+        interest.add("篮球");
+        interest.add("足球");
         mmap.put("cyUser", cyUser);
+        mmap.put("interest", interest);
         return prefix + "/edit";
     }
 
@@ -124,5 +132,16 @@ public class CyUserController extends BaseController
     @RequestMapping("t")
     public String hello(){
         return "demo/cyDemo/index";
+    }
+
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<CyUser> util = new ExcelUtil(CyUser.class);
+        List<CyUser> userList = util.importExcel(file.getInputStream());
+        String operName = ShiroUtils.getSysUser().getLoginName();
+        String message = cyUserService.importUser(userList, updateSupport, operName);
+        return AjaxResult.success(message);
     }
 }

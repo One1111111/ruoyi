@@ -1,12 +1,16 @@
 package com.ruoyi.travel.service.impl;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.ruoyi.travel.mapper.FileTableMapper;
-import com.ruoyi.travel.domain.FileTable;
-import com.ruoyi.travel.service.IFileTableService;
 import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.travel.domain.FileTable;
+import com.ruoyi.travel.mapper.FileTableMapper;
+import com.ruoyi.travel.service.IFileTableService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * 发布文件Service业务层处理
@@ -17,7 +21,7 @@ import com.ruoyi.common.core.text.Convert;
 @Service
 public class FileTableServiceImpl implements IFileTableService 
 {
-    @Autowired
+    @Resource
     private FileTableMapper fileTableMapper;
 
     /**
@@ -91,4 +95,26 @@ public class FileTableServiceImpl implements IFileTableService
     {
         return fileTableMapper.deleteFileTableById(id);
     }
+
+    /**
+     * 时间查询处理
+     */
+    public List<FileTable> selectFileTableListWithDate(FileTable fileTable,String s,String e){
+        List<FileTable> fileTables = fileTableMapper.selectFileTableList(fileTable);
+        List<FileTable> result = new ArrayList();
+        fileTables.forEach(u ->{
+            Calendar c = Calendar.getInstance();
+            c.setTime(u.getReleaseTime());//填入当前时间
+            SimpleDateFormat us = new SimpleDateFormat("yyyyMMdd");
+            String curDate = us.format(c.getTime());  //当前日期
+            Integer integer = Integer.valueOf(curDate);
+            Integer integer1 = Integer.valueOf(s.replace("-", ""));
+            Integer integer2 = Integer.valueOf(e.replace( "-", ""));
+            if(integer >= integer1 && integer <= integer2){
+                result.add(u);
+            }
+        });
+        return  result;
+    }
+
 }

@@ -58,4 +58,14 @@ public interface ICyUserService
      * @return 结果
      */
     public int deleteCyUserById(Long id);
+
+    /**
+     * 导入用户数据
+     *
+     * @param userList 用户数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importUser(List<CyUser> userList, Boolean isUpdateSupport, String operName);
 }

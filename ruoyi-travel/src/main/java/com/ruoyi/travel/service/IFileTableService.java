@@ -58,4 +58,14 @@ public interface IFileTableService
      * @return 结果
      */
     public int deleteFileTableById(Long id);
+
+
+    /**
+     * 时间处理
+     * @param fileTable
+     * @param s
+     * @param e
+     * @return
+     */
+    public List<FileTable> selectFileTableListWithDate(FileTable fileTable,String s,String e);
 }

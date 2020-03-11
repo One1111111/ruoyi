@@ -50,5 +50,11 @@ public class TT {
         return curDate;
     }
 
+    /**
+     * 生成脚本文件
+     */
+    public static void autoJK(){
+        
+    }
 
 }
